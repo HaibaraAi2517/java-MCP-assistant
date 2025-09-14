@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ChatMemoryProviderConfig {
 
-    @Bean(name = "chatMemoryProvider")
+    @Bean(name = "chatMemoryProviderYoke")
     public ChatMemoryProvider chatMemoryProvider(MongoChatMemoryStore mongoChatMemoryStore) {
         return memoryId -> MessageWindowChatMemory.builder()
                 .id(memoryId)

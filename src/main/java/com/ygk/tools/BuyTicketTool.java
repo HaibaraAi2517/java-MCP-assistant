@@ -42,11 +42,11 @@ public class BuyTicketTool {
                     String seatLevel = (String) arguments.get("seatLevel");
                     Integer numSeats = ((Number) arguments.get("numSeats")).intValue();
 
-                    // 先查询可用的座位ID
-                    String querySql = "SELECT s.id, s.price, t.train_type, t.train_number " +
+                    // 先查询可用的座位ID（包含 seat_type，供筛选）
+                    String querySql = "SELECT s.id, s.price, s.seat_type, t.train_type, t.train_number " +
                             "FROM t_seat s " +
                             "INNER JOIN t_train t ON s.train_id = t.id " +
-                            "WHERE s.start_station = '" + startStation + "' AND s.end_station = '" + endStation + 
+                            "WHERE s.start_station = '" + startStation + "' AND s.end_station = '" + endStation +
                             "' AND s.seat_status = 0";
 
                     return dbClient.sql(querySql)
@@ -54,36 +54,37 @@ public class BuyTicketTool {
                                     "id", row.get("id"),
                                     "price", row.get("price"),
                                     "trainType", row.get("train_type"),
-                                    "seatType", row.get("seat_type")
+                                    "seatType", row.get("seat_type"),
+                                    "trainNumber", row.get("train_number")
                             ))
                             .all()
                             .collectList()
                             .flatMap(rows -> {
                                 // 根据座位等级筛选并选择座位
                                 List<Map<String, Object>> availableSeats = new ArrayList<>();
-                                
+
                                 for (Map<String, Object> row : rows) {
                                     Object seatTypeObj = row.get("seatType");
                                     Object trainTypeObj = row.get("trainType");
-                                    
+
                                     Integer seatType = null;
                                     Integer trainType = null;
-                                    
+
                                     if (seatTypeObj instanceof Number) {
                                         seatType = ((Number) seatTypeObj).intValue();
                                     }
                                     if (trainTypeObj instanceof Number) {
                                         trainType = ((Number) trainTypeObj).intValue();
                                     }
-                                    
+
                                     if (seatType == null || trainType == null) continue;
-                                    
+
                                     String level = getSeatLevel(trainType, seatType);
                                     if (level != null && level.equals(seatLevel)) {
                                         availableSeats.add(row);
                                     }
                                 }
-                                
+
                                 if (availableSeats.size() < numSeats) {
                                     // 座位不足
                                     List<McpSchema.Content> contents = new ArrayList<>();
@@ -98,17 +99,17 @@ public class BuyTicketTool {
                                         throw new RuntimeException(e);
                                     }
                                 }
-                                
+
                                 // 选择前numSeats个座位进行预订
                                 List<Long> selectedIds = availableSeats.stream()
                                         .limit(numSeats)
                                         .map(row -> ((Number) row.get("id")).longValue())
                                         .toList();
-                                
+
                                 // 批量更新座位状态
-                                String updateSql = "UPDATE t_seat SET seat_status = 1 WHERE id IN (" + 
+                                String updateSql = "UPDATE t_seat SET seat_status = 1 WHERE id IN (" +
                                         selectedIds.stream().map(String::valueOf).reduce((a, b) -> a + "," + b).orElse("") + ")";
-                                
+
                                 return Mono.from(
                                         dbClient.sql(updateSql)
                                                 .fetch()
@@ -120,6 +121,7 @@ public class BuyTicketTool {
                                                                 "success", true,
                                                                 "message", "成功预订 " + count + " 张" + seatLevel + "票",
                                                                 "bookedSeats", count,
+                                                                "seatIds", selectedIds,
                                                                 "totalPrice", availableSeats.stream()
                                                                         .limit(numSeats)
                                                                         .mapToInt(row -> ((Number) row.get("price")).intValue())
