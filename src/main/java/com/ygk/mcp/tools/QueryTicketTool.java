@@ -1,4 +1,5 @@
-package com.ygk.mcp_tools;
+package com.ygk.mcp.tools;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.modelcontextprotocol.server.McpServerFeatures;
@@ -14,6 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 火车票查询工具
+ * 提供火车票余量查询功能的MCP工具
+ */
 public class QueryTicketTool {
 
     private final DatabaseClient dbClient;

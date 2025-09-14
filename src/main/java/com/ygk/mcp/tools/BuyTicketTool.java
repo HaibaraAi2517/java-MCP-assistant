@@ -1,4 +1,4 @@
-package com.ygk.mcp_tools;
+package com.ygk.mcp.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.modelcontextprotocol.server.McpServerFeatures;
@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 火车票购买工具
+ * 提供火车票预订功能的MCP工具
+ */
 public class BuyTicketTool {
 
     private final DatabaseClient dbClient;

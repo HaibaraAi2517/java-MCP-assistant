@@ -27,12 +27,6 @@
             <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
             <version>1.0.0-beta3</version>
         </dependency>
-<!--        &lt;!&ndash;langchain4j-open-ai 基础&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>dev.langchain4j</groupId>-->
-<!--            <artifactId>langchain4j-open-ai</artifactId>-->
-<!--            <version>1.0.0-beta3</version>-->
-<!--        </dependency>-->
         <!--langchain4j 高阶-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -51,16 +45,6 @@
             <artifactId>langchain4j-ollama-spring-boot-starter</artifactId>
             <version>1.0.0-beta3</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>dev.langchain4j</groupId>-->
-<!--            <artifactId>langchain4j-ollama</artifactId>-->
-<!--            <version>1.0.0-beta3</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>dev.langchain4j</groupId>-->
-<!--            <artifactId>langchain4j-ollama</artifactId>-->
-<!--            <version>1.0.0-beta3</version>-->
-<!--        </dependency>-->
         <!--DashScope (Qwen)接入阿里云百炼平台
             https://docs.langchain4j.dev/integrations/language-models/dashscope
         -->

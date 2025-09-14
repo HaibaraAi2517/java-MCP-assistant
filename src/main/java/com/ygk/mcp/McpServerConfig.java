@@ -1,8 +1,8 @@
 package com.ygk.mcp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ygk.mcp_tools.BuyTicketTool;
-import com.ygk.mcp_tools.QueryTicketTool;
+import com.ygk.mcp.tools.BuyTicketTool;
+import com.ygk.mcp.tools.QueryTicketTool;
 import io.modelcontextprotocol.server.McpAsyncServer;
 import io.modelcontextprotocol.server.McpServer;
 import io.modelcontextprotocol.server.transport.WebMvcSseServerTransportProvider;
